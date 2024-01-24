@@ -1,0 +1,105 @@
+Use of Foreign Key:
+1. Manages referential integerity.
+2. A foreign key is a column or a set of columns in a database table that refers to the primary key of another table. 
+   It establishes a link between two tables, creating a relationship between them. This relationship is often used to enforce referential integrity in a relational database.
+   Refrential integrity maintains aise kare:
+   On Delete Cascade: when a FK is deleted in parent table, then entire row is deleted from child table
+   On Delete Set NUll : when a FK is deleted in (from) parent table, then foreign key in child table is set as NULL
+   ON UPDATE CASCADE: Automatically updates the corresponding records in the child table when the primary key in the parent table is updated.
+
+On delete Set NULL: 
+-- Creating the parent table
+CREATE TABLE parent_table (
+    parent_id INT PRIMARY KEY,
+    parent_name VARCHAR(255)
+);
+
+-- Creating the child table with ON DELETE SET NULL
+CREATE TABLE child_table (
+    child_id INT PRIMARY KEY,
+    child_name VARCHAR(255),
+    parent_id INT,
+    FOREIGN KEY (parent_id) REFERENCES parent_table(parent_id) ON DELETE SET NULL
+);
+
+-- Inserting some sample data
+INSERT INTO parent_table (parent_id, parent_name) VALUES (1, 'Parent 1');
+INSERT INTO child_table (child_id, child_name, parent_id) VALUES (101, 'Child 1-1', 1);
+INSERT INTO child_table (child_id, child_name, parent_id) VALUES (102, 'Child 1-2', 1);
+
+-- Displaying the data before modification
+SELECT * FROM parent_table;
+SELECT * FROM child_table;
+
+-- Deleting a record from parent_table (setting child_table.parent_id to NULL)
+DELETE FROM parent_table WHERE parent_id = 1;
+
+-- Displaying the data after modification
+SELECT * FROM parent_table;
+SELECT * FROM child_table;
+
+ON Delete Cascade:
+-- Creating the parent table
+CREATE TABLE parent_table (
+    parent_id INT PRIMARY KEY,
+    parent_name VARCHAR(255)
+);
+
+-- Creating the child table with a foreign key constraint using ON DELETE CASCADE
+CREATE TABLE child_table (
+    child_id INT PRIMARY KEY,
+    child_name VARCHAR(255),
+    parent_id INT,
+    FOREIGN KEY (parent_id) REFERENCES parent_table(parent_id) ON DELETE CASCADE
+);
+
+-- Inserting some sample data
+INSERT INTO parent_table (parent_id, parent_name) VALUES (1, 'Parent 1');
+INSERT INTO child_table (child_id, child_name, parent_id) VALUES (101, 'Child 1-1', 1);
+INSERT INTO child_table (child_id, child_name, parent_id) VALUES (102, 'Child 1-2', 1);
+
+-- Displaying the data in the tables
+SELECT * FROM parent_table;
+SELECT * FROM child_table;
+
+-- Deleting a record from parent_table (and cascading delete to child_table)
+DELETE FROM parent_table WHERE parent_id = 1;
+
+-- Displaying the data after deletion
+SELECT * FROM parent_table;  -- No records in parent_table with parent_id = 1
+SELECT * FROM child_table;   -- No records in child_table with parent_id = 1
+
+On Update Cascade:
+-- Creating the parent table
+CREATE TABLE parent_table (
+    parent_id INT PRIMARY KEY,
+    parent_name VARCHAR(255)
+);
+
+-- Creating the child table with a foreign key referencing the parent table
+CREATE TABLE child_table (
+    child_id INT PRIMARY KEY,
+    child_name VARCHAR(255),
+    parent_id INT,
+    FOREIGN KEY (parent_id) REFERENCES parent_table(parent_id) ON UPDATE CASCADE
+);
+
+-- Inserting some sample data
+INSERT INTO parent_table (parent_id, parent_name) VALUES (1, 'Parent 1');
+INSERT INTO child_table (child_id, child_name, parent_id) VALUES (101, 'Child 1-1', 1);
+INSERT INTO child_table (child_id, child_name, parent_id) VALUES (102, 'Child 1-2', 1);
+
+-- Displaying the data before modification
+SELECT * FROM parent_table;
+SELECT * FROM child_table;
+
+-- Updating the primary key in the parent table (and cascading update to child_table)
+UPDATE parent_table SET parent_id = 100 WHERE parent_id = 1;
+
+-- Displaying the data after modification
+SELECT * FROM parent_table;
+SELECT * FROM child_table;
+
+
+
+   

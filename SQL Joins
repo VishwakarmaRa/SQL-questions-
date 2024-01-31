@@ -1,0 +1,44 @@
+use company;
+    
+    -- Inner Join
+    -- Understading of Joins In SQL(Inner Join,Left Join, Right Join)
+	-- fetch theemployees name and department name tehy belong to
+    select e.Emp_name, d.Dept_name
+	from employee e
+	join department d on e.Dept_id=d.Dept_id;
+    
+    -- Left Join
+    -- fetch the All employees name and department name tehy belong to
+    select e.Emp_name, d.Dept_name
+	from employee e
+	left join department d on e.Dept_id=d.Dept_id;
+    -- Right Join 
+    -- fetch the employees name and All  (preferences right table ko de rhe hai)department name tehy belong to
+    select e.Emp_name, d.Dept_name
+	from employee e
+	right join department d on e.Dept_id=d.Dept_id;
+    
+    -- fetch the details of All employees,their manager,their Department, 
+	-- and the projects they work on 
+    select e.Emp_name, d.Dept_name, m.Manager_name, p.Project_name
+	from employee e
+	left join department d on e.Dept_id=d.Dept_id
+	inner join manager m on m.Manager_id=e.Manager_id
+    left join projects p on p.Team_memeber_id=e.Emp_id;
+    
+    -- Self Join
+    -- select * from family
+--     F1	David  	4	  F5
+--     F2	carol	  10	F5
+--     F3	Michel	12	F5
+--     F4	john	  36	
+--     F5	maryam	40	F6
+--     F6	start	  70	
+--     F7	ROhan	  6	  F4
+--     F8	Asha	  8	  F4
+
+-- fetch the child name and their age corresponding to their parent name and parent age
+	select child.name as child_name, child.age as child_age,
+    parent.name as parent_name, parent.age as parent_age
+    from family as child
+    join family as parent on child.parent_id=parent.member_id
